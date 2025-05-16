@@ -79,8 +79,22 @@ async function run() {
     app.get('/users', async (req,res)=>{
           const result = await userCollection.find().toArray()
           res.send(result)
-
     })
+
+
+    app.patch('/users', async(req,res)=>{
+      // console.log(req.body)
+      const {email, lastSignInTime} = req.body
+      const filter ={email:email}
+      const updateDoc={
+        $set:{
+          lastSignInTime:lastSignInTime
+        }
+      }
+      const result = await userCollection.updateOne(filter,updateDoc)
+      res.send(result)
+    })
+
 
     app.post('/users', async(req,res)=>{
       const userProfile = req.body;
